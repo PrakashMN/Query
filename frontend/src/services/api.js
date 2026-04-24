@@ -11,47 +11,47 @@ export const apiClient = axios.create({
 });
 
 export async function fetchProperties(filters = {}) {
-  const { data } = await apiClient.get("/properties", { params: filters });
+  const { data } = await apiClient.get("/properties/", { params: filters });
   return data;
 }
 
 export async function fetchProperty(id) {
-  const { data } = await apiClient.get(`/properties/${id}`);
+  const { data } = await apiClient.get(`/properties/${id}/`);
   return data;
 }
 
 export async function createProperty(payload) {
-  const { data } = await apiClient.post("/properties", payload);
+  const { data } = await apiClient.post("/properties/", payload);
   return data;
 }
 
 export async function updateProperty(id, payload) {
-  const { data } = await apiClient.put(`/properties/${id}`, payload);
+  const { data } = await apiClient.put(`/properties/${id}/`, payload);
   return data;
 }
 
 export async function uploadPropertyImages(id, files) {
   const formData = new FormData();
   files.forEach((file) => formData.append("files", file));
-  const { data } = await apiClient.post(`/properties/${id}/images`, formData);
+  const { data } = await apiClient.post(`/properties/${id}/images/`, formData);
   return data;
 }
 
 export async function uploadPropertyDocuments(id, files) {
   const formData = new FormData();
   files.forEach((file) => formData.append("files", file));
-  const { data } = await apiClient.post(`/properties/${id}/documents`, formData);
+  const { data } = await apiClient.post(`/properties/${id}/documents/`, formData);
   return data;
 }
 
 export async function uploadFloorPlan(id, file) {
   const formData = new FormData();
   formData.append("file", file);
-  const { data } = await apiClient.post(`/properties/${id}/floor-plan`, formData);
+  const { data } = await apiClient.post(`/properties/${id}/floor-plan/`, formData);
   return data;
 }
 
 export async function generatePropertyPdf(id) {
-  const { data } = await apiClient.post(`/properties/${id}/generate-pdf`);
+  const { data } = await apiClient.post(`/properties/${id}/generate-pdf/`);
   return data;
 }
