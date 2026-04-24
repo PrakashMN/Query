@@ -145,18 +145,22 @@ function PropertyFormPage() {
     }
   };
 
-  const buildPayload = () => ({
-    ...form,
-    area: Number(form.area),
-    price: Number(form.price),
-    carpet_area: form.carpet_area ? Number(form.carpet_area) : null,
-    balcony_count: form.balcony_count ? Number(form.balcony_count) : null,
-    year_built: form.year_built ? Number(form.year_built) : null,
-    amenities: form.amenities
-      .split(",")
-      .map((item) => item.trim())
-      .filter(Boolean),
-  });
+  const buildPayload = () => {
+    const payload = {
+      ...form,
+      area: form.area ? Number(form.area) : 0,
+      price: form.price ? Number(form.price) : 0,
+      deal_price: form.deal_price ? Number(form.deal_price) : null,
+      carpet_area: form.carpet_area ? Number(form.carpet_area) : null,
+      balcony_count: form.balcony_count ? Number(form.balcony_count) : null,
+      year_built: form.year_built ? Number(form.year_built) : null,
+      possession_date: form.possession_date && form.possession_date.trim() ? form.possession_date : null,
+      amenities: typeof form.amenities === 'string' 
+        ? form.amenities.split(",").map((item) => item.trim()).filter(Boolean)
+        : form.amenities,
+    };
+    return payload;
+  };
 
   const getErrorMessage = (err, fallback) => {
     const detail = err?.response?.data?.detail;
@@ -347,6 +351,28 @@ function PropertyFormPage() {
                     placeholder="e.g. 2021"
                     min="1900"
                     max={new Date().getFullYear()}
+                  />
+                </label>
+
+                <label>
+                  <span>Price (in ₹)</span>
+                  <input
+                    type="number"
+                    name="price"
+                    value={form.price}
+                    onChange={handleChange}
+                    placeholder="e.g. 4500000"
+                    required
+                  />
+                </label>
+
+                <label>
+                  <span>Possession Date</span>
+                  <input
+                    type="date"
+                    name="possession_date"
+                    value={form.possession_date || ""}
+                    onChange={handleChange}
                   />
                 </label>
               </div>
