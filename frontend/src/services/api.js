@@ -7,10 +7,7 @@ const baseURL = rawURL.endsWith("/") ? rawURL.slice(0, -1) : rawURL;
 console.log("🚀 API Base URL:", baseURL);
 
 export const apiClient = axios.create({ 
-  baseURL,
-  headers: {
-    'Content-Type': 'application/json'
-  }
+  baseURL
 });
 
 export async function fetchProperties(filters = {}) {
