@@ -5,16 +5,16 @@ from typing import Any
 from fastapi.encoders import jsonable_encoder
 from fastapi import APIRouter, File, HTTPException, Query, UploadFile, status
 
-from ..database import get_database
-from ..models.property import (
+from database import get_database
+from models.property import (
     DealStatus,
     PropertyCreate,
     PropertyListItem,
     PropertyResponse,
     PropertyUpdate,
 )
-from ..services.file_service import save_upload
-from ..services.pdf_service import request_pdf_generation
+from services.file_service import save_upload
+from services.pdf_service import request_pdf_generation
 
 
 router = APIRouter(prefix="/properties", tags=["properties"])

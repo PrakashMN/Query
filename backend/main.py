@@ -4,9 +4,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-from .config import settings
-from .database import close_mongo_connection, connect_to_mongo
-from .routers.properties import router as properties_router
+from config import settings
+from database import close_mongo_connection, connect_to_mongo
+from routers.properties import router as properties_router
 
 
 @asynccontextmanager

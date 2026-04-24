@@ -3,7 +3,7 @@ from pathlib import Path
 import httpx
 from fastapi import HTTPException, status
 
-from ..config import settings
+from config import settings
 
 
 async def request_pdf_generation(payload: dict) -> str:

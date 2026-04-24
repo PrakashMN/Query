@@ -4,7 +4,7 @@ from uuid import uuid4
 
 from fastapi import HTTPException, UploadFile, status
 
-from ..config import settings
+from config import settings
 
 
 IMAGE_TYPES = {"image/jpeg", "image/png", "image/webp"}
