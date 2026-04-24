@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import myManeLogo from "../../../shared/assets/mymane-logo.svg";
+import myManeLogo from "../assets/mymane-logo.svg";
 
 function Navbar() {
   return (
