@@ -21,6 +21,12 @@ async def lifespan(_: FastAPI):
 
 app = FastAPI(title=settings.app_name, lifespan=lifespan)
 
+@app.middleware("http")
+async def force_https_middleware(request: Request, call_next):
+    # Force the scheme to https so redirects use https://
+    request.scope["scheme"] = "https"
+    return await call_next(request)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],

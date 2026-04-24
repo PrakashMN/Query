@@ -31,7 +31,7 @@ def fetch_property_or_404(property_id: str) -> dict[str, Any]:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Property not found")
     return db[property_id]
 
-@router.get("", response_model=list[PropertyListItem])
+@router.get("/", response_model=list[PropertyListItem])
 async def list_properties(
     search: str | None = Query(default=None),
     type: str | None = Query(default=None),
@@ -41,7 +41,7 @@ async def list_properties(
     db = properties_database()
     return list(db.values())
 
-@router.post("", response_model=PropertyResponse, status_code=status.HTTP_201_CREATED)
+@router.post("/", response_model=PropertyResponse, status_code=status.HTTP_201_CREATED)
 async def create_property(payload: PropertyCreate):
     now = now_utc()
     property_id = uuid.uuid4().hex
@@ -69,11 +69,11 @@ async def create_property(payload: PropertyCreate):
     
     return document
 
-@router.get("/{property_id}", response_model=PropertyResponse)
+@router.get("/{property_id}/", response_model=PropertyResponse)
 async def get_property(property_id: str):
     return fetch_property_or_404(property_id)
 
-@router.put("/{property_id}", response_model=PropertyResponse)
+@router.put("/{property_id}/", response_model=PropertyResponse)
 async def update_property(property_id: str, payload: PropertyUpdate):
     property_doc = fetch_property_or_404(property_id)
     
@@ -86,7 +86,7 @@ async def update_property(property_id: str, payload: PropertyUpdate):
         
     return property_doc
 
-@router.delete("/{property_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{property_id}/", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_property(property_id: str):
     db = properties_database()
     if property_id not in db:
@@ -94,7 +94,7 @@ async def delete_property(property_id: str):
     del db[property_id]
     persist_db()
 
-@router.post("/{property_id}/images", response_model=list[str])
+@router.post("/{property_id}/images/", response_model=list[str])
 async def upload_images(property_id: str, files: list[UploadFile] = File(...)):
     property_doc = fetch_property_or_404(property_id)
     saved_paths = []
@@ -107,7 +107,7 @@ async def upload_images(property_id: str, files: list[UploadFile] = File(...)):
     persist_db()
     return saved_paths
 
-@router.post("/{property_id}/documents", response_model=list[str])
+@router.post("/{property_id}/documents/", response_model=list[str])
 async def upload_documents(property_id: str, files: list[UploadFile] = File(...)):
     property_doc = fetch_property_or_404(property_id)
     saved_paths = []
@@ -120,7 +120,7 @@ async def upload_documents(property_id: str, files: list[UploadFile] = File(...)
     persist_db()
     return saved_paths
 
-@router.post("/{property_id}/floor-plan", response_model=dict[str, str])
+@router.post("/{property_id}/floor-plan/", response_model=dict[str, str])
 async def upload_floor_plan(property_id: str, file: UploadFile = File(...)):
     property_doc = fetch_property_or_404(property_id)
     path = await save_upload(file, property_id, "floor-plan", max_size_mb=2)
@@ -129,7 +129,7 @@ async def upload_floor_plan(property_id: str, file: UploadFile = File(...)):
     persist_db()
     return {"floor_plan": path}
 
-@router.post("/{property_id}/generate-pdf", response_model=dict[str, str])
+@router.post("/{property_id}/generate-pdf/", response_model=dict[str, str])
 async def generate_pdf(property_id: str):
     property_doc = fetch_property_or_404(property_id)
     pdf_url = await request_pdf_generation({"property": jsonable_encoder(property_doc)})
