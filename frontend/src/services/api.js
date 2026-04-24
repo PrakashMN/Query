@@ -1,7 +1,13 @@
 import axios from "axios";
 
 const PRODUCTION_URL = "https://backend-production-d39ef.up.railway.app";
-const rawURL = import.meta.env.VITE_API_URL || PRODUCTION_URL;
+let rawURL = import.meta.env.VITE_API_URL || PRODUCTION_URL;
+
+// FORCE HTTPS
+if (rawURL.startsWith("http://")) {
+  rawURL = rawURL.replace("http://", "https://");
+}
+
 const baseURL = rawURL.endsWith("/") ? rawURL.slice(0, -1) : rawURL;
 
 console.log("🚀 API Base URL:", baseURL);
