@@ -1,6 +1,9 @@
 import axios from "axios";
 
-const baseURL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
+const PRODUCTION_URL = "https://backend-production-d39ef.up.railway.app";
+const baseURL = import.meta.env.VITE_API_URL || PRODUCTION_URL || "http://127.0.0.1:8000";
+
+console.log("🚀 API Base URL:", baseURL);
 
 export const apiClient = axios.create({ baseURL });
 
