@@ -4,7 +4,8 @@ import Navbar from "../components/Navbar";
 import StatusBar from "../components/StatusBar";
 import { fetchProperty, generatePropertyPdf } from "../services/api";
 
-const apiBaseUrl = import.meta.env.VITE_API_URL || "http://localhost:8000";
+const PRODUCTION_URL = "https://backend-production-d39ef.up.railway.app";
+const apiBaseUrl = import.meta.env.VITE_API_URL || PRODUCTION_URL || "http://localhost:8000";
 
 function formatCurrency(amount) {
   if (!amount && amount !== 0) return "Not set";

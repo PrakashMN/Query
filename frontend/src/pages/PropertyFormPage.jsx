@@ -164,7 +164,7 @@ function PropertyFormPage() {
     if (Array.isArray(detail) && detail.length)
       return detail.map((item) => item?.msg || JSON.stringify(item)).join(", ");
     if (err?.message === "Network Error")
-      return "Unable to reach the backend API. Please make sure FastAPI is running on http://localhost:8000.";
+      return `Unable to reach the backend API. Please check your connection or backend URL.`;
     return fallback;
   };
 
