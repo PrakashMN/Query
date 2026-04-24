@@ -9,9 +9,11 @@ from database import close_mongo_connection, connect_to_mongo
 from routers.properties import router as properties_router
 
 
+# Ensure upload directory exists before mounting StaticFiles
+settings.upload_dir.mkdir(parents=True, exist_ok=True)
+
 @asynccontextmanager
 async def lifespan(_: FastAPI):
-    settings.upload_dir.mkdir(parents=True, exist_ok=True)
     await connect_to_mongo()
     yield
     await close_mongo_connection()
