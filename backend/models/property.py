@@ -44,12 +44,12 @@ class SignatureFields(BaseModel):
 
 
 class PropertyBase(BaseModel):
-    title: str = Field(..., min_length=3, max_length=200)
-    type: PropertyType
-    deal_type: DealType
-    location: str = Field(..., min_length=3, max_length=300)
-    area: float = Field(..., gt=0)
-    price: float = Field(..., ge=0)
+    title: str = ""
+    type: PropertyType = PropertyType.residential
+    deal_type: DealType = DealType.sell
+    location: str = ""
+    area: float = 0.0
+    price: float = 0.0
     description: str = ""
     amenities: list[str] = Field(default_factory=list)
     documents: list[str] = Field(default_factory=list)
@@ -59,7 +59,7 @@ class PropertyBase(BaseModel):
     buyer_name: str = ""
     buyer_contact: str = ""
     buyer_id_proof: str | None = None
-    deal_price: float | None = Field(default=None, ge=0)
+    deal_price: float | None = Field(default=0.0, ge=0)
     payment_mode: PaymentMode | None = None
     possession_date: date | None = None
     deal_status: DealStatus = DealStatus.draft

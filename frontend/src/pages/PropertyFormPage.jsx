@@ -243,8 +243,7 @@ function PropertyFormPage() {
                     name="title"
                     value={form.title}
                     onChange={handleChange}
-                    placeholder="e.g. Ganeshpur 36"
-                    required
+                    placeholder="Enter property name"
                   />
                 </label>
                 <label>
@@ -314,7 +313,6 @@ function PropertyFormPage() {
                     value={form.area}
                     onChange={handleChange}
                     placeholder="e.g. 1006"
-                    required
                   />
                 </label>
 
@@ -362,7 +360,6 @@ function PropertyFormPage() {
                     value={form.price}
                     onChange={handleChange}
                     placeholder="e.g. 4500000"
-                    required
                   />
                 </label>
 
