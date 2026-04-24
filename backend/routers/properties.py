@@ -5,7 +5,7 @@ from typing import Any
 from fastapi.encoders import jsonable_encoder
 from fastapi import APIRouter, File, HTTPException, Query, UploadFile, status
 
-from database import get_database
+from database import get_database, persist_db
 from models.property import (
     DealStatus,
     PropertyCreate,
@@ -65,6 +65,7 @@ async def create_property(payload: PropertyCreate):
     
     db = properties_database()
     db[property_id] = document
+    persist_db()
     
     return document
 
@@ -81,6 +82,7 @@ async def update_property(property_id: str, payload: PropertyUpdate):
         for key, value in updates.items():
             property_doc[key] = value
         property_doc["updated_at"] = now_utc()
+        persist_db()
         
     return property_doc
 
@@ -90,6 +92,7 @@ async def delete_property(property_id: str):
     if property_id not in db:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Property not found")
     del db[property_id]
+    persist_db()
 
 @router.post("/{property_id}/images", response_model=list[str])
 async def upload_images(property_id: str, files: list[UploadFile] = File(...)):
@@ -101,6 +104,7 @@ async def upload_images(property_id: str, files: list[UploadFile] = File(...)):
         
     property_doc["images"].extend(saved_paths)
     property_doc["updated_at"] = now_utc()
+    persist_db()
     return saved_paths
 
 @router.post("/{property_id}/documents", response_model=list[str])
@@ -113,6 +117,7 @@ async def upload_documents(property_id: str, files: list[UploadFile] = File(...)
         
     property_doc["documents"].extend(saved_paths)
     property_doc["updated_at"] = now_utc()
+    persist_db()
     return saved_paths
 
 @router.post("/{property_id}/floor-plan", response_model=dict[str, str])
@@ -121,6 +126,7 @@ async def upload_floor_plan(property_id: str, file: UploadFile = File(...)):
     path = await save_upload(file, property_id, "floor-plan", max_size_mb=2)
     property_doc["floor_plan"] = path
     property_doc["updated_at"] = now_utc()
+    persist_db()
     return {"floor_plan": path}
 
 @router.post("/{property_id}/generate-pdf", response_model=dict[str, str])
@@ -130,5 +136,6 @@ async def generate_pdf(property_id: str):
     
     property_doc["generated_pdf"] = pdf_url
     property_doc["updated_at"] = now_utc()
+    persist_db()
     
     return {"pdf_url": pdf_url}
