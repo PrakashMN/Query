@@ -1,11 +1,17 @@
 import axios from "axios";
 
 const PRODUCTION_URL = "https://backend-production-d39ef.up.railway.app";
-const baseURL = import.meta.env.VITE_API_URL || PRODUCTION_URL || "http://127.0.0.1:8000";
+const rawURL = import.meta.env.VITE_API_URL || PRODUCTION_URL;
+const baseURL = rawURL.endsWith("/") ? rawURL.slice(0, -1) : rawURL;
 
 console.log("🚀 API Base URL:", baseURL);
 
-export const apiClient = axios.create({ baseURL });
+export const apiClient = axios.create({ 
+  baseURL,
+  headers: {
+    'Content-Type': 'application/json'
+  }
+});
 
 export async function fetchProperties(filters = {}) {
   const { data } = await apiClient.get("/properties", { params: filters });

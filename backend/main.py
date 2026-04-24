@@ -25,6 +25,7 @@ from fastapi import Request
 
 @app.middleware("http")
 async def force_cors_middleware(request: Request, call_next):
+    print(f"DEBUG: Incoming {request.method} request to {request.url}")
     # If it's a preflight OPTIONS request, we handle it immediately
     if request.method == "OPTIONS":
         from fastapi.responses import Response
