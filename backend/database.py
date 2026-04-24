@@ -15,15 +15,19 @@ def init_db():
     conn.commit()
     conn.close()
 
+from fastapi.encoders import jsonable_encoder
+
 def save_to_db(data_dict: dict[str, Any]):
     """Saves the entire dictionary to SQLite."""
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
     # We store each property as a separate row for better reliability
     for key, value in data_dict.items():
+        # Important: use jsonable_encoder to handle dates/datetimes
+        serialized_data = json.dumps(jsonable_encoder(value))
         cursor.execute(
             "INSERT OR REPLACE INTO store (key, data) VALUES (?, ?)",
-            (key, json.dumps(value))
+            (key, serialized_data)
         )
     conn.commit()
     conn.close()
